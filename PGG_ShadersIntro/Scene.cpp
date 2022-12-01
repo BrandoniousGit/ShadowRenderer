@@ -42,7 +42,7 @@ Scene::Scene()
 	// This is multiplied by all the light components (ambient, diffuse, specular)
 	// Note that the diffuse colour set with the line above will be multiplied by the texture colour
 	// If you want just the texture colour, use modelMaterial->SetDiffuseColour( glm::vec3(1,1,1) );
-	modelMaterial->SetTexture("Whiskers_Diffuse.bmp");
+	modelMaterial->SetTexture("Maxwell_Diffuse.bmp");
 	// Need to tell the material the light's position
 	// If you change the light's position you need to call this again
 	modelMaterial->SetLightPosition(_lightPosition);
@@ -53,7 +53,7 @@ Scene::Scene()
 	// The mesh is the geometry for the object
 	Mesh *modelMesh = new Mesh();
 	// Load from OBJ file. This must have triangulated geometry
-	modelMesh->LoadOBJ("teapot3.obj");
+	modelMesh->LoadOBJ("Maxwell.obj");
 	// Tell the game object to use this mesh
 	_model->SetMesh(modelMesh);
 	_plane->SetMesh(modelMesh);
