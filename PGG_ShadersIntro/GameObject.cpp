@@ -20,9 +20,6 @@ void GameObject::Update( float deltaTs )
 {
 	// Put any update code here
 	// Change the _position and _rotation to move the model
-
-
-
 }
 
 void GameObject::Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix)
@@ -36,6 +33,7 @@ void GameObject::Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 			_modelMatrix = glm::translate(glm::mat4(1.0f), _position );
 			_modelMatrix = glm::rotate(_modelMatrix, _rotation.y, glm::vec3(0,1,0) );
 			_invModelMatrix = glm::rotate(glm::mat4(1.0f), -_rotation.y, glm::vec3(0,1,0) );
+			_modelMatrix = glm::scale(_modelMatrix, _scale);
 
 			// Give all the matrices to the material
 			// This makes sure they are sent to the shader
@@ -46,6 +44,5 @@ void GameObject::Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 
 		// Sends the mesh data down the pipeline
 		_mesh->Draw();
-
 	}
 }

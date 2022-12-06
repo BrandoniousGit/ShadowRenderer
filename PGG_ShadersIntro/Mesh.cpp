@@ -192,13 +192,7 @@ void Mesh::LoadOBJ( std::string filename )
 				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0 );
 				glEnableVertexAttribArray(2);
 			}
-	
 		}
-
-
-
-
-
 	}
 	else
 	{

@@ -1,5 +1,6 @@
 
 #include "GameObject.h"
+#include "Camera.h"
 
 // The GLM library contains vector and matrix functions and classes for us to use
 // They are designed to easily work with OpenGL!
@@ -16,7 +17,6 @@ class Scene
 {
 public:
 
-	
 	// Currently the scene is set up in the constructor
 	// This means the object(s) are loaded, given materials and positions as well as the camera and light
 	Scene();
@@ -33,13 +33,13 @@ public:
 	// Draws the scene from the camera's point of view
 	void Draw();
 
-	std::vector<GameObject*> m_gameObjects;
+	GameObject* m_maxwell, * m_plane;
 
 protected:
-
-	// Currently one object, this could be a list of objects!
-	GameObject *_model, *_plane;
-		
+	
+	unsigned int depthMapFBO;
+	unsigned int depthMap;
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
 	
@@ -51,6 +51,8 @@ protected:
 
 	// Position of the single point-light in the scene
 	glm::vec3 _lightPosition;
+
+	Material* _shadowMat;
 
 
 };

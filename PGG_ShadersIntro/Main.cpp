@@ -19,6 +19,9 @@
 #include <iostream>
 #include <string>
 
+
+using namespace glm;
+
 // An initialisation function, mainly for GLEW
 // This will also print to console the version of OpenGL we are using
 bool InitGL()
@@ -87,9 +90,9 @@ int main(int argc, char *argv[])
 	// You can experiment with the numbers to see what they do
 	int winPosX = 100;
 	int winPosY = 100;
-	int winWidth = 640;
-	int winHeight = 640;
-	SDL_Window *window = SDL_CreateWindow("My Window!!!",  // The first parameter is the window title
+	int winWidth = 1080;
+	int winHeight = 1080;
+	SDL_Window *window = SDL_CreateWindow("Maxwell Spin!",  // The first parameter is the window title
 		winPosX, winPosY,
 		winWidth, winHeight,
 		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
@@ -313,7 +316,7 @@ int main(int argc, char *argv[])
 
 		if (animateObject)
 		{
-			glm::vec3 currentRot = myScene.m_gameObjects[0]->GetRotation();
+			vec3 currentRot = myScene.m_maxwell->GetRotation();
 
 			currentRot.y += deltaTs * 0.5f;
 			while (currentRot.y > (3.14159265358979323846 * 2.0))
@@ -321,20 +324,20 @@ int main(int argc, char *argv[])
 				currentRot.y -= (float)(3.14159265358979323846 * 2.0);
 			}
 
-			myScene.m_gameObjects[0]->SetRotation(currentRot);
+			myScene.m_maxwell->SetRotation(currentRot);
 		}
-
-		myScene.Update( deltaTs );
 
 
 		// Draw our world
 		// --------------------------------------------
 
 		// Specify the colour to clear the framebuffer to
-		glClearColor(0.0f,0.0f,0.0f,0.0f);
+		glClearColor(0.0f,0.0f,1.0f,1.0f);
 		// This writes the above colour to the colour part of the framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		myScene.m_maxwell->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+		myScene.m_maxwell->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
 
 		myScene.Draw();
 
@@ -358,20 +361,20 @@ int main(int argc, char *argv[])
 			ImGui::Begin("Controls");
 
 			// This is how you add a bit of text to the window
-			ImGui::Text("Arrow keys rotate the camera");
+			//ImGui::Text("Arrow keys rotate the camera");
 
 			// Checkbox for the object's animation
-			ImGui::Checkbox("Animate Object", &animateObject);
+			//ImGui::Checkbox("Animate Object", &animateObject);
 
 			// Slider for the object's rotation angle
 			// Here, we do:
 			//  1. Get a state from the object
 			//  2. Use the GUI to present an editor for it
 			//  3. Send it back to the object in case it's changed
-			glm::vec3 currentRot = myScene.m_gameObjects[0]->GetRotation();
-			ImGui::SliderFloat("Object Angle", &(currentRot.y), 0.0f, 2.0f * 3.141592653589793238462643383);
-			myScene.m_gameObjects[0]->SetRotation(currentRot);
-			
+			/*vec3 currentRot = myScene.m_maxwell->GetRotation();
+			ImGui::SliderFloat("Object Angle", &(currentRot.y), 0.0f, 2.0f * 3.141592653589793238462643383f);
+			myScene.m_maxwell->SetRotation(currentRot);*/
+
 			// Showing how to insert text into a string and also get FPS!!
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 

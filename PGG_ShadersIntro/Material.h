@@ -28,10 +28,9 @@ public:
 	// Set light position in world space
 	void SetLightPosition( glm::vec3 input ) { _lightPosition = input;}
 
-
 	// Sets texture
 	// This applies to ambient, diffuse and specular colours
-	// If you want textures for anything else, you'll need to do that yourself ;)
+	// If you want textures for anything else, you'll need to do that yourself ;) 
 	bool SetTexture( std::string filename ) {_texture1 = LoadTexture(filename); return _texture1>0;}
 
 	// Sets the material, applying the shaders

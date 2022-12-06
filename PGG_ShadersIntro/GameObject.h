@@ -15,14 +15,27 @@ public:
 	void SetMesh(Mesh *input) {_mesh = input;}
 	void SetMaterial(Material *input) {_material = input;}
 	
-	void SetPosition( float posX, float posY, float posZ ) {_position.x = posX; _position.y = posY; _position.z = posZ;}
+	//Setters and Getters for Position
+	void SetPosition(float posX, float posY, float posZ) { _position.x = posX; _position.y = posY; _position.z = posZ; }
+	void SetPosition(glm::vec3 value) { _position = value; }
+	//void AddPosition(float posX, float posY, float posZ) { _position.x += posX; _position.y += posY; _position.z += posZ; }
+	//void AddPosition(glm::vec3 value) { _position += value; }
+	glm::vec3 GetPosition() { return _position; }
 
-	void SetRotation( float rotX, float rotY, float rotZ ) {_rotation.x = rotX; _rotation.y = rotY; _rotation.z = rotZ;}
+	//Setters and Getters for Rotation
+	void SetRotation(float rotX, float rotY, float rotZ) { _rotation.x = rotX; _rotation.y = rotY; _rotation.z = rotZ; }
 	void SetRotation(glm::vec3 value) { _rotation = value; }
+	//void AddRotation(float rotX, float rotY, float rotZ) { _rotation.x += rotX; _rotation.y += rotY; _rotation.z += rotZ; }
+	//void AddRotation(glm::vec3 value) { _rotation += value; }
 	glm::vec3 GetRotation() { return _rotation; }
 
+	//Setters and Getters for Size
+	void SetScale(float sX, float sY, float sZ) { _scale.x = sX; _scale.y = sY; _scale.z = sZ; }
+	void SetScale(glm::vec3 value) { _scale = value; }
+	//void AddScale(float sX, float sY, float sZ) { _scale.x += sX; _scale.y += sY; _scale.z += sZ; }
+	//void AddScale(glm::vec3 value) { _scale += value; }
+	glm::vec3 GetScale() { return _scale; }
 
-	// Game object is current hard-coded to rotate
 	void Update( float deltaTs );
 
 	// Need to give it the camera's orientation and projection
@@ -46,8 +59,7 @@ protected:
 	// Orientation of the model
 	// The model matrix must be built from this and the _position
 	glm::vec3 _rotation;
+
+	glm::vec3 _scale;
 };
-
-
-
 #endif

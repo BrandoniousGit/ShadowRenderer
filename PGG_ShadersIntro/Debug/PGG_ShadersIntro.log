@@ -1,3 +1,4 @@
-﻿  Main.cpp
-C:\Users\s5312506\Downloads\GCP_OBJLoader_v2\PGG_ShadersIntro\Main.cpp(372,98): warning C4305: 'argument': truncation from 'double' to 'float'
-  PGG_ShadersIntro.vcxproj -> C:\Users\s5312506\Downloads\GCP_OBJLoader_v2\Debug\PGG_ShadersIntro.exe
+﻿  GameObject.cpp
+  Main.cpp
+  Generating Code...
+  PGG_ShadersIntro.vcxproj -> \\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\Debug\PGG_ShadersIntro.exe

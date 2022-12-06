@@ -1,0 +1,21 @@
+﻿  imgui.cpp
+  imgui_draw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_impl_sdl.cpp
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\SDKs\IMGUI\imgui_impl_sdl.cpp(69,10): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  imgui_impl_sdlrenderer.cpp
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\SDKs\IMGUI\imgui_impl_sdlrenderer.cpp(35,10): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  GameObject.cpp
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\PGG_ShadersIntro\GameObject.cpp(2,10): fatal error C1083: Cannot open include file: 'GLM/gtc/type_ptr.hpp': No such file or directory
+  Main.cpp
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\PGG_ShadersIntro\Main.cpp(3,10): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  Material.cpp
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\PGG_ShadersIntro\Material.cpp(4,10): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  Mesh.cpp
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\PGG_ShadersIntro\Mesh.h(5,10): fatal error C1083: Cannot open include file: 'GLM/glm.hpp': No such file or directory
+  Scene.cpp
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\PGG_ShadersIntro\Mesh.h(5,10): fatal error C1083: Cannot open include file: 'GLM/glm.hpp': No such file or directory
+  Generating Code...
+\\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\SDKs\IMGUI\imgui_widgets.cpp : fatal error C1090: PDB API call failed, error code '5': \\bournemouth.ac.uk\data\Student\Home\SciTech\s5312506\ShadowRenderer\PGG_ShadersIntro\x64\Debug\vc143.pdb
