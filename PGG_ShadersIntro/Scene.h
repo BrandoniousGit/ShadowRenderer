@@ -39,10 +39,10 @@ protected:
 	
 	unsigned int depthMapFBO;
 	unsigned int depthMap;
-	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+	const unsigned int SHADOW_WIDTH = 1080, SHADOW_HEIGHT = 1080;
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
-	
+
 	// This matrix is like the camera's lens
 	glm::mat4 _projMatrix;
 
@@ -54,5 +54,7 @@ protected:
 
 	Material* _shadowMat;
 
-
+	glm::mat4 _lightProjection;
+	glm::mat4 _lightView;
+	glm::mat4 _lightSpaceMatrix;
 };

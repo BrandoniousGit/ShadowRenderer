@@ -49,6 +49,7 @@ protected:
 	int _shaderInvModelMatLocation;
 	int _shaderViewMatLocation;
 	int _shaderProjMatLocation;
+	int _shaderViewProjMatLocation;
 
 	// Location of Uniforms in the fragment shader
 	int _shaderDiffuseColLocation, _shaderEmissiveColLocation, _shaderSpecularColLocation;

@@ -10,9 +10,13 @@
 Material::Material()
 {
 	// Initialise everything here
+	_shaderProgram = 0;
+
 	_shaderModelMatLocation = 0;
+	_shaderInvModelMatLocation = 0;
 	_shaderViewMatLocation = 0;
 	_shaderProjMatLocation = 0;
+	_shaderViewProjMatLocation = 0;
 
 	_shaderDiffuseColLocation = 0;
 	_shaderEmissiveColLocation = 0;
@@ -173,6 +177,7 @@ bool Material::LoadShaders( std::string vertFilename, std::string fragFilename )
 	_shaderInvModelMatLocation = glGetUniformLocation( _shaderProgram, "invModelMat" );
 	_shaderViewMatLocation = glGetUniformLocation( _shaderProgram, "viewMat" );
 	_shaderProjMatLocation = glGetUniformLocation( _shaderProgram, "projMat" );
+	_shaderViewProjMatLocation = glGetUniformLocation(_shaderProgram, "viewProjMat");
 		
 	_shaderDiffuseColLocation = glGetUniformLocation( _shaderProgram, "diffuseColour" );
 	_shaderEmissiveColLocation = glGetUniformLocation( _shaderProgram, "emissiveColour" );
@@ -253,10 +258,12 @@ void Material::SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm:
 {
 	glUseProgram( _shaderProgram );
 		// Send matrices and uniforms
+	glm::mat4 viewProjMatrix = projMatrix * viewMatrix;
 	glUniformMatrix4fv(_shaderModelMatLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix) );
 	glUniformMatrix4fv(_shaderInvModelMatLocation, 1, GL_TRUE, glm::value_ptr(invModelMatrix) );
 	glUniformMatrix4fv(_shaderViewMatLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix) );
 	glUniformMatrix4fv(_shaderProjMatLocation, 1, GL_FALSE, glm::value_ptr(projMatrix) );
+	glUniformMatrix4fv(_shaderViewProjMatLocation, 1, GL_FALSE, glm::value_ptr(viewProjMatrix));
 }
 	
 

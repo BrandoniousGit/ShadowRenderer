@@ -149,8 +149,6 @@ int main(int argc, char *argv[])
 	// State to keep track of whether our window is expanded open or not
 	bool showLightingWindow = true;
 
-
-
 	
 	// We are going to work out how much time passes from frame to frame
 	// We will use this variable to store the time at our previous frame
@@ -327,17 +325,21 @@ int main(int argc, char *argv[])
 			myScene.m_maxwell->SetRotation(currentRot);
 		}
 
+		myScene.Update(deltaTs);
 
 		// Draw our world
 		// --------------------------------------------
 
 		// Specify the colour to clear the framebuffer to
-		glClearColor(0.0f,0.0f,1.0f,1.0f);
+		glClearColor(0.55f,0.45f,0.95f,1.0f);
 		// This writes the above colour to the colour part of the framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		myScene.m_maxwell->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 		myScene.m_maxwell->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
+
+		myScene.m_plane->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+		myScene.m_plane->SetPosition(glm::vec3(0.0f, -2.0f, 0.0f));
 
 		myScene.Draw();
 
