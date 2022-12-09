@@ -127,5 +127,11 @@
     <Text Include="vertShader.txt">
       <Filter>Shaders</Filter>
     </Text>
+    <Text Include="lightFragShader.txt">
+      <Filter>Shaders</Filter>
+    </Text>
+    <Text Include="lightVertShader.txt">
+      <Filter>Shaders</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -12,8 +12,8 @@ Scene::Scene()
 	_cameraAngleX = 0.0f;
 	_cameraAngleY = 0.0f;
 
-	//_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -5.0f));
-	//_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
+	_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -5.0f));
+	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
 
 
 	// Create a texture for the shadow map
@@ -64,12 +64,15 @@ Scene::Scene()
 	// This colour modulates the texture colour
 	maxwellMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	planeMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f) );
-	// The material currently supports one texture
-	// This is multiplied by all the light components (ambient, diffuse, specular)
-	// Note that the diffuse colour set with the line above will be multiplied by the texture colour
-	// If you want just the texture colour, use modelMaterial->SetDiffuseColour( glm::vec3(1,1,1) );
+
+	// Setting default Textures
 	maxwellMaterial->SetTexture("Maxwell_Diffuse.bmp");
 	planeMaterial->SetTexture("WelcomeMat_diffuse.bmp");
+
+	// Setting the Shadow Maps
+	maxwellMaterial->SetShadowMap(depthMap);
+	planeMaterial->SetShadowMap(depthMap);
+
 	// Need to tell the material the light's position
 	// If you change the light's position you need to call this again
 	maxwellMaterial->SetLightPosition(_lightPosition);
@@ -77,7 +80,10 @@ Scene::Scene()
 
 	//Setting up the light space matrix
 	_lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
-	_lightView = glm::translate(glm::mat4(1.0f), _lightPosition);
+	//_lightView = glm::translate(glm::mat4(1.0f), _lightPosition);
+	_lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
 
 	//Normal Materials
 	m_maxwell->SetMaterial(maxwellMaterial);
@@ -108,6 +114,7 @@ void Scene::Update( float deltaTs )
 	m_maxwell->Update(deltaTs);
 	m_plane->Update(deltaTs);
 
+	_viewMatrix = glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -15.0f)), _cameraAngleX, glm::vec3(1, 0, 0)), _cameraAngleY, glm::vec3(0, 1, 0));
 	//_lightPosition += glm::vec3(0.0f, -0.01f, 0.0f);
 	//std::cout << _lightPosition.y;
 }
@@ -119,26 +126,17 @@ void Scene::Draw()
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	// Set the light as the camera (i.e. use the light's matrices as the camera's matrices)
-	_viewMatrix = _lightView;
-	_projMatrix = _lightProjection;
-
-	// Draw scene	
-    m_maxwell->LightDraw(_viewMatrix, _projMatrix);
-	m_plane->LightDraw(_viewMatrix, _projMatrix);
+	// Draw scene from light's POV
+    m_maxwell->LightDraw(_lightView, _lightProjection);
+	m_plane->LightDraw(_lightView, _lightProjection);
 
 	// Set the screen as the write buffer
 	// Set the depth map texture for use in the objects
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, 1080, 1080);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
 
-	//Setting the camera matricies
-	_viewMatrix = glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -15.0f)), _cameraAngleX, glm::vec3(1, 0, 0)), _cameraAngleY, glm::vec3(0, 1, 0));
-	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
-
-	// Draw scene	
+	// Draw scene from Camera's POV
 	m_maxwell->Draw(_viewMatrix, _projMatrix);
 	m_plane->Draw(_viewMatrix, _projMatrix);
 }

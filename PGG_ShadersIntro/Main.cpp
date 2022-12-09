@@ -181,6 +181,12 @@ int main(int argc, char *argv[])
 	//   * Update our world
 	//   * Draw our world
 	// We will come back to this in later lectures
+	myScene.m_maxwell->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+	myScene.m_maxwell->SetPosition(glm::vec3(0.0f, -1.9f, 0.5f));
+
+	myScene.m_plane->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+	myScene.m_plane->SetPosition(glm::vec3(0.0f, -2.0f, 0.0f));
+
 	bool go = true;
 	while( go )
 	{
@@ -312,7 +318,7 @@ int main(int argc, char *argv[])
 			myScene.ChangeCameraAngleX(-1.0f * deltaTs);
 		}
 
-		if (animateObject)
+		/*if (animateObject)
 		{
 			vec3 currentRot = myScene.m_maxwell->GetRotation();
 
@@ -323,7 +329,7 @@ int main(int argc, char *argv[])
 			}
 
 			myScene.m_maxwell->SetRotation(currentRot);
-		}
+		}*/
 
 		myScene.Update(deltaTs);
 
@@ -334,12 +340,6 @@ int main(int argc, char *argv[])
 		glClearColor(0.55f,0.45f,0.95f,1.0f);
 		// This writes the above colour to the colour part of the framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		myScene.m_maxwell->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
-		myScene.m_maxwell->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
-
-		myScene.m_plane->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
-		myScene.m_plane->SetPosition(glm::vec3(0.0f, -2.0f, 0.0f));
 
 		myScene.Draw();
 

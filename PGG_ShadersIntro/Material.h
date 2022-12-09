@@ -32,6 +32,7 @@ public:
 	// This applies to ambient, diffuse and specular colours
 	// If you want textures for anything else, you'll need to do that yourself ;) 
 	bool SetTexture( std::string filename ) {_texture1 = LoadTexture(filename); return _texture1>0;}
+	bool SetShadowMap(unsigned int value) { return _shadowMap; }
 
 	// Sets the material, applying the shaders
 	void Apply();
@@ -50,6 +51,7 @@ protected:
 	int _shaderViewMatLocation;
 	int _shaderProjMatLocation;
 	int _shaderViewProjMatLocation;
+	int _shaderShadowMapSamplerLocation;
 
 	// Location of Uniforms in the fragment shader
 	int _shaderDiffuseColLocation, _shaderEmissiveColLocation, _shaderSpecularColLocation;
@@ -65,5 +67,6 @@ protected:
 	
 	// OpenGL handle for the texture
 	unsigned int _texture1;
+	unsigned int _shadowMap;
 };
 #endif

@@ -24,6 +24,7 @@ Material::Material()
 	_shaderSpecularColLocation = 0;
 
 	_shaderTex1SamplerLocation = 0;
+	_shaderShadowMapSamplerLocation = 0;
 
 	_texture1 = 0;
 }
@@ -272,12 +273,16 @@ void Material::Apply()
 	glUseProgram( _shaderProgram );
 
 	glUniform4fv( _shaderWSLightPosLocation, 1, glm::value_ptr(_lightPosition) );
-	
+
 	glUniform3fv( _shaderEmissiveColLocation, 1, glm::value_ptr(_emissiveColour) );
 	glUniform3fv( _shaderDiffuseColLocation, 1, glm::value_ptr(_diffuseColour) );
 	glUniform3fv( _shaderSpecularColLocation, 1, glm::value_ptr(_specularColour) );
 	
 	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(_shaderTex1SamplerLocation,0);
+	glUniform1i(_shaderTex1SamplerLocation, 0);
 	glBindTexture(GL_TEXTURE_2D, _texture1);
+
+	glActiveTexture(GL_TEXTURE1);
+	glUniform1i(_shaderShadowMapSamplerLocation, 0);
+	glBindTexture(GL_TEXTURE_2D, _shadowMap);
 }

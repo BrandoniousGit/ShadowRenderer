@@ -184,6 +184,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="fragShader.txt" />
+    <Text Include="lightFragShader.txt" />
+    <Text Include="lightVertShader.txt" />
     <Text Include="vertShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
