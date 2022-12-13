@@ -19,6 +19,7 @@ public:
 
 	// For setting the standard matrices needed by the shader
 	void SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix);
+	void SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix, glm::mat4 lightMatrix);
 	
 	// For setting material properties
 	void SetEmissiveColour( glm::vec3 input ) { _emissiveColour = input;}
@@ -31,8 +32,8 @@ public:
 	// Sets texture
 	// This applies to ambient, diffuse and specular colours
 	// If you want textures for anything else, you'll need to do that yourself ;) 
-	bool SetTexture( std::string filename ) {_texture1 = LoadTexture(filename); return _texture1>0;}
-	bool SetShadowMap(unsigned int value) { return _shadowMap; }
+	bool SetTexture( std::string filename ) { _texture1 = LoadTexture(filename); return _texture1>0; }
+	bool SetShadowMap( unsigned int value ) { _shadowMap = value;  return _shadowMap>0; }
 
 	// Sets the material, applying the shaders
 	void Apply();
@@ -50,7 +51,7 @@ protected:
 	int _shaderInvModelMatLocation;
 	int _shaderViewMatLocation;
 	int _shaderProjMatLocation;
-	int _shaderViewProjMatLocation;
+	int _shaderLightSpaceMatrixMatLocation;
 	int _shaderShadowMapSamplerLocation;
 
 	// Location of Uniforms in the fragment shader

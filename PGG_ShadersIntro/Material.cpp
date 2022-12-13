@@ -16,7 +16,7 @@ Material::Material()
 	_shaderInvModelMatLocation = 0;
 	_shaderViewMatLocation = 0;
 	_shaderProjMatLocation = 0;
-	_shaderViewProjMatLocation = 0;
+	_shaderLightSpaceMatrixMatLocation = 0;
 
 	_shaderDiffuseColLocation = 0;
 	_shaderEmissiveColLocation = 0;
@@ -178,7 +178,7 @@ bool Material::LoadShaders( std::string vertFilename, std::string fragFilename )
 	_shaderInvModelMatLocation = glGetUniformLocation( _shaderProgram, "invModelMat" );
 	_shaderViewMatLocation = glGetUniformLocation( _shaderProgram, "viewMat" );
 	_shaderProjMatLocation = glGetUniformLocation( _shaderProgram, "projMat" );
-	_shaderViewProjMatLocation = glGetUniformLocation(_shaderProgram, "viewProjMat");
+	_shaderLightSpaceMatrixMatLocation = glGetUniformLocation(_shaderProgram, "lightSpaceMatrix");
 		
 	_shaderDiffuseColLocation = glGetUniformLocation( _shaderProgram, "diffuseColour" );
 	_shaderEmissiveColLocation = glGetUniformLocation( _shaderProgram, "emissiveColour" );
@@ -186,6 +186,7 @@ bool Material::LoadShaders( std::string vertFilename, std::string fragFilename )
 	_shaderWSLightPosLocation = glGetUniformLocation( _shaderProgram, "worldSpaceLightPos" );
 
 	_shaderTex1SamplerLocation = glGetUniformLocation( _shaderProgram, "tex1" );
+	_shaderShadowMapSamplerLocation = glGetUniformLocation(_shaderProgram, "shadowMap");
 
 	return true;
 }
@@ -258,13 +259,25 @@ unsigned int Material::LoadTexture( std::string filename )
 void Material::SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix)
 {
 	glUseProgram( _shaderProgram );
-		// Send matrices and uniforms
-	glm::mat4 viewProjMatrix = projMatrix * viewMatrix;
-	glUniformMatrix4fv(_shaderModelMatLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix) );
-	glUniformMatrix4fv(_shaderInvModelMatLocation, 1, GL_TRUE, glm::value_ptr(invModelMatrix) );
-	glUniformMatrix4fv(_shaderViewMatLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix) );
-	glUniformMatrix4fv(_shaderProjMatLocation, 1, GL_FALSE, glm::value_ptr(projMatrix) );
-	glUniformMatrix4fv(_shaderViewProjMatLocation, 1, GL_FALSE, glm::value_ptr(viewProjMatrix));
+	// Send matrices and uniforms
+	glm::mat4 lightSpaceMatrix = projMatrix * viewMatrix;
+	glUniformMatrix4fv(_shaderModelMatLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	glUniformMatrix4fv(_shaderInvModelMatLocation, 1, GL_TRUE, glm::value_ptr(invModelMatrix));
+	glUniformMatrix4fv(_shaderViewMatLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	glUniformMatrix4fv(_shaderProjMatLocation, 1, GL_FALSE, glm::value_ptr(projMatrix));
+	glUniformMatrix4fv(_shaderLightSpaceMatrixMatLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+}
+
+void Material::SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix, glm::mat4 lightMatrix)
+{
+	glUseProgram(_shaderProgram);
+	// Send matrices and uniforms
+	glm::mat4 lightSpaceMatrix = projMatrix * viewMatrix;
+	glUniformMatrix4fv(_shaderModelMatLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	glUniformMatrix4fv(_shaderInvModelMatLocation, 1, GL_TRUE, glm::value_ptr(invModelMatrix));
+	glUniformMatrix4fv(_shaderViewMatLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	glUniformMatrix4fv(_shaderProjMatLocation, 1, GL_FALSE, glm::value_ptr(projMatrix));
+	glUniformMatrix4fv(_shaderLightSpaceMatrixMatLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 }
 	
 
@@ -283,6 +296,6 @@ void Material::Apply()
 	glBindTexture(GL_TEXTURE_2D, _texture1);
 
 	glActiveTexture(GL_TEXTURE1);
-	glUniform1i(_shaderShadowMapSamplerLocation, 0);
+	glUniform1i(_shaderShadowMapSamplerLocation, 1);
 	glBindTexture(GL_TEXTURE_2D, _shadowMap);
 }

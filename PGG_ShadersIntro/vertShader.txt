@@ -11,8 +11,8 @@ layout(location = 2) in vec2 vTexCoordIn;
 uniform mat4 modelMat;
 uniform mat4 viewMat;
 uniform mat4 projMat;
-
-uniform vec4 worldSpaceLightPos = {1,0.0,1,1};
+uniform mat4 lightSpaceMatrix;
+uniform vec4 worldSpaceLightPos;
 
 // These are the outputs from the vertex shader
 // The data will (eventually) end up in the fragment shader
@@ -20,6 +20,7 @@ out vec3 eyeSpaceNormalV;
 out vec3 eyeSpaceLightPosV;
 out vec3 eyeSpaceVertPosV;
 out vec2 texCoord;
+out vec4 fragPosLightSpace;
 
 // The actual program, which will run on the graphics card
 void main()
@@ -42,4 +43,6 @@ void main()
 	// The surface normal is multiplied by the model and viewing matrices
 	// This doesn't need to 'move' so we cast down to a 3x3 matrix
 	eyeSpaceNormalV = mat3(viewMat * modelMat) * vNormalIn;
+
+	fragPosLightSpace = lightSpaceMatrix * vec4(modelMat * vPosition);
 }

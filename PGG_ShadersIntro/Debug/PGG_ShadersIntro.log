@@ -1,7 +1,2 @@
-﻿  Camera.cpp
-  GameObject.cpp
-  Main.cpp
-  Material.cpp
-  Scene.cpp
-  Generating Code...
+﻿  Scene.cpp
   PGG_ShadersIntro.vcxproj -> D:\ShadowRenderer\Debug\PGG_ShadersIntro.exe

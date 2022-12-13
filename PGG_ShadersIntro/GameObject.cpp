@@ -22,7 +22,7 @@ void GameObject::Update( float deltaTs )
 	// Change the _position and _rotation to move the model
 }
 
-void GameObject::Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix)
+void GameObject::Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix, glm::mat4 lightMatrix)
 {
 	if( _mesh != NULL )
 	{
@@ -37,7 +37,7 @@ void GameObject::Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 
 			// Give all the matrices to the material
 			// This makes sure they are sent to the shader
-			_material->SetMatrices(_modelMatrix, _invModelMatrix, viewMatrix, projMatrix);
+			_material->SetMatrices(_modelMatrix, _invModelMatrix, viewMatrix, projMatrix, lightMatrix);
 			// This activates the shader
 			_material->Apply();
 		}

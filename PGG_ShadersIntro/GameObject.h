@@ -41,7 +41,7 @@ public:
 	void Update( float deltaTs );
 
 	// Need to give it the camera's orientation and projection
-	void Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix);
+	void Draw(glm::mat4 viewMatrix, glm::mat4 projMatrix, glm::mat4 lightMatrix);
 
 	void LightDraw(glm::mat4 viewMatrix, glm::mat4 projMatrix);
 

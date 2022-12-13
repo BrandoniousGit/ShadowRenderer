@@ -40,11 +40,12 @@ Scene::Scene()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// Position of the light, in world-space
-	_lightPosition = glm::vec3(0,3,0);
+	_lightPosition = glm::vec3(-2.0f, 5.0f, -1.0f);
 
 	// Creating a game object
 	m_maxwell = new GameObject();
 	m_plane = new GameObject();
+
 	// Creating the material for the game object
 	Material* maxwellMaterial = new Material();
 	Material* planeMaterial = new Material();
@@ -79,9 +80,9 @@ Scene::Scene()
 	planeMaterial->SetLightPosition(_lightPosition);
 
 	//Setting up the light space matrix
-	_lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
+	_lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 10.0f);
 	//_lightView = glm::translate(glm::mat4(1.0f), _lightPosition);
-	_lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+	_lightView = glm::lookAt(glm::vec3(-1.0f, 5.0f, -1.0f),
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -100,7 +101,6 @@ Scene::Scene()
 	m_maxwell->SetMesh(maxwellMesh);
 	planeMesh->LoadOBJ("WelcomeMatOBJ.obj");
 	m_plane->SetMesh(planeMesh);
-
 }
 
 Scene::~Scene()
@@ -137,6 +137,6 @@ void Scene::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Draw scene from Camera's POV
-	m_maxwell->Draw(_viewMatrix, _projMatrix);
-	m_plane->Draw(_viewMatrix, _projMatrix);
+	m_maxwell->Draw(_viewMatrix, _projMatrix, _lightSpaceMatrix);
+	m_plane->Draw(_viewMatrix, _projMatrix, _lightSpaceMatrix);
 }

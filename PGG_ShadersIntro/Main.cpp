@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 	//   * Draw our world
 	// We will come back to this in later lectures
 	myScene.m_maxwell->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
-	myScene.m_maxwell->SetPosition(glm::vec3(0.0f, -1.9f, 0.5f));
+	myScene.m_maxwell->SetPosition(glm::vec3(0.0f, -1.0f, 0.5f));
 
 	myScene.m_plane->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	myScene.m_plane->SetPosition(glm::vec3(0.0f, -2.0f, 0.0f));
