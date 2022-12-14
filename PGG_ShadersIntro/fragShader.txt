@@ -29,15 +29,19 @@ uniform sampler2D shadowMap;
 // This is the output, it is the fragment's (pixel's) colour
 out vec4 fragColour;
 
-float ShadowCalc(vec4 fragPosLightSpace)
+float ShadowCalc(vec4 fragPosLightSpace, vec3 m_normal, vec3 m_lightDir)
 {
 	vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
 	projCoords = projCoords * 0.5 + 0.5;
 	float closestDepth = texture(shadowMap, projCoords.xy).r;
 	float currentDepth = projCoords.z;
-	float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+
+	float bias = max(0.05 * (1.0 - dot(m_normal, m_lightDir)), 0.005);  
+
+	float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 
 	return shadow;
+	//return closestDepth;
 }
 
 // The actual program, which will run on the graphics card
@@ -66,7 +70,7 @@ void main()
 		vec3 ambient = 0.15 * lightColour;
 
 		// Shadow
-		float shadow = ShadowCalc(fragPosLightSpace);
+		float shadow = ShadowCalc(fragPosLightSpace, normal, lightDir);
 		vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * texCol;
 
 		fragColour = vec4(lighting, 1.0);

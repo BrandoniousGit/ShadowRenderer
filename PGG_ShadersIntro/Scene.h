@@ -1,4 +1,3 @@
-
 #include "GameObject.h"
 #include "Camera.h"
 
@@ -35,6 +34,10 @@ public:
 
 	GameObject* m_maxwell, * m_plane;
 
+	float angle;
+
+	glm::vec3 GetBackgroundColor() { return _backgroundColor; }
+
 protected:
 	
 	unsigned int depthMapFBO;
@@ -53,6 +56,8 @@ protected:
 	glm::vec3 _lightPosition;
 
 	Material* _shadowMat;
+
+	glm::vec3 _backgroundColor;
 
 	glm::mat4 _lightProjection;
 	glm::mat4 _lightView;

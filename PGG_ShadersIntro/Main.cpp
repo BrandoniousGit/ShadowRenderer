@@ -166,8 +166,11 @@ int main(int argc, char *argv[])
 	// These are controlled by the states of key presses
 	// They will be used to control the camera
 	bool cmdRotateLeft = false, cmdRotateRight = false, cmdRotateUp = false, cmdRotateDown = false;
+	bool RotateCatX = false, RotateCatY = false, RotateCatZ = false, RotateCatNegativeX = false, RotateCatNegativeY = false, RotateCatNegativeZ = false;
 
-	bool animateObject = true;
+	bool reset = false;
+
+	glm::vec3 backgroundColor = myScene.GetBackgroundColor();
 
 	// Ok, hopefully finished with initialisation now
 	// Let's go and draw something!
@@ -182,7 +185,7 @@ int main(int argc, char *argv[])
 	//   * Draw our world
 	// We will come back to this in later lectures
 	myScene.m_maxwell->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
-	myScene.m_maxwell->SetPosition(glm::vec3(0.0f, -1.0f, 0.5f));
+	myScene.m_maxwell->SetPosition(glm::vec3(0.0f, 0.0f, 0.25f));
 
 	myScene.m_plane->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	myScene.m_plane->SetPosition(glm::vec3(0.0f, -2.0f, 0.0f));
@@ -241,12 +244,22 @@ int main(int argc, char *argv[])
 					cmdRotateRight = true;
 					break;
 				case SDLK_a:
+					RotateCatNegativeY = true;
 					break;
 				case SDLK_d:
+					RotateCatY = true;
 					break;
 				case SDLK_w:
+					RotateCatNegativeX = true;
 					break;
 				case SDLK_s:
+					RotateCatX = true;
+					break;
+				case SDLK_q:
+					RotateCatZ = true;
+					break;
+				case SDLK_e:
+					RotateCatNegativeZ = true;
 					break;
 				}
 				break;
@@ -270,12 +283,22 @@ int main(int argc, char *argv[])
 					cmdRotateRight = false;
 					break;
 				case SDLK_a:
+					RotateCatNegativeY = false;
 					break;
 				case SDLK_d:
+					RotateCatY = false;
 					break;
 				case SDLK_w:
+					RotateCatNegativeX = false;
 					break;
 				case SDLK_s:
+					RotateCatX = false;
+					break;
+				case SDLK_q:
+					RotateCatZ = false;
+					break;
+				case SDLK_e:
+					RotateCatNegativeZ = false;
 					break;
 				}
 				break;
@@ -318,18 +341,39 @@ int main(int argc, char *argv[])
 			myScene.ChangeCameraAngleX(-1.0f * deltaTs);
 		}
 
-		/*if (animateObject)
+		//Rotate the Cat
+		if (RotateCatNegativeY && !RotateCatY)
 		{
-			vec3 currentRot = myScene.m_maxwell->GetRotation();
+			myScene.m_maxwell->AddRotation(glm::vec3(0.0f, -0.01f, 0.0f));
+		}
+		else if (!RotateCatNegativeY && RotateCatY)
+		{
+			myScene.m_maxwell->AddRotation(glm::vec3(0.0f, 0.01f, 0.0f));
+		}
 
-			currentRot.y += deltaTs * 0.5f;
-			while (currentRot.y > (3.14159265358979323846 * 2.0))
-			{
-				currentRot.y -= (float)(3.14159265358979323846 * 2.0);
-			}
+		if (RotateCatNegativeX && !RotateCatX)
+		{
+			myScene.m_maxwell->AddRotation(glm::vec3(-0.01f, 0.0f, 0.0f));
+		}
+		else if (!RotateCatNegativeX && RotateCatX)
+		{
+			myScene.m_maxwell->AddRotation(glm::vec3(0.01f, 0.0f, 0.0f));
+		}
 
-			myScene.m_maxwell->SetRotation(currentRot);
-		}*/
+		if (RotateCatNegativeZ && !RotateCatZ)
+		{
+			myScene.m_maxwell->AddRotation(glm::vec3(0.0f, 0.0f, -0.01f));
+		}
+		else if (!RotateCatNegativeZ && RotateCatZ)
+		{
+			myScene.m_maxwell->AddRotation(glm::vec3(0.0f, 0.0f, 0.01f));
+		}
+
+		if (reset)
+		{
+			myScene.m_maxwell->SetRotation(0.0f, 0.0f, 0.0f);
+			reset = false;
+		}
 
 		myScene.Update(deltaTs);
 
@@ -337,9 +381,11 @@ int main(int argc, char *argv[])
 		// --------------------------------------------
 
 		// Specify the colour to clear the framebuffer to
-		glClearColor(0.55f,0.45f,0.95f,1.0f);
+		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, 1.0f);
 		// This writes the above colour to the colour part of the framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//myScene.m_maxwell->AddRotation(vec3(0.01f, 0.0f, 0.01f));
 
 		myScene.Draw();
 
@@ -362,23 +408,17 @@ int main(int argc, char *argv[])
 			// All ImGui commands after this to create widgets will be added to the window
 			ImGui::Begin("Controls");
 
-			// This is how you add a bit of text to the window
-			//ImGui::Text("Arrow keys rotate the camera");
+			ImGui::Text("W & S for X Rotation");
+			ImGui::Text("A & D for Y Rotation");
+			ImGui::Text("Q & E for Z Rotation");
 
 			// Checkbox for the object's animation
-			//ImGui::Checkbox("Animate Object", &animateObject);
+		    ImGui::Text("Press button to Reset Cat");
+			ImGui::Checkbox("Reset Cat", &reset);
 
-			// Slider for the object's rotation angle
-			// Here, we do:
-			//  1. Get a state from the object
-			//  2. Use the GUI to present an editor for it
-			//  3. Send it back to the object in case it's changed
-			/*vec3 currentRot = myScene.m_maxwell->GetRotation();
-			ImGui::SliderFloat("Object Angle", &(currentRot.y), 0.0f, 2.0f * 3.141592653589793238462643383f);
-			myScene.m_maxwell->SetRotation(currentRot);*/
-
-			// Showing how to insert text into a string and also get FPS!!
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			// Color picker for Background
+			ImGui::Text("Colour picker for Background");
+			ImGui::ColorEdit3("Background Colour", &(backgroundColor[0]));
 
 			// We've finished adding stuff to the window
 			ImGui::End();

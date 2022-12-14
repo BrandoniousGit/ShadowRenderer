@@ -19,7 +19,7 @@ Scene::Scene()
 	// Create a texture for the shadow map
 	// Create a FBO that uses this texture for writing
 	glGenFramebuffers(1, &depthMapFBO);
-
+	glCullFace(GL_FRONT);
 	//Creating 2D texture to use as depth buffer
 	glGenTextures(1, &depthMap);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
@@ -38,9 +38,10 @@ Scene::Scene()
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glCullFace(GL_BACK);
 
 	// Position of the light, in world-space
-	_lightPosition = glm::vec3(-2.0f, 5.0f, -1.0f);
+	_lightPosition = glm::vec3(2.0f, 5.0f, 1.0f);
 
 	// Creating a game object
 	m_maxwell = new GameObject();
@@ -82,7 +83,7 @@ Scene::Scene()
 	//Setting up the light space matrix
 	_lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 10.0f);
 	//_lightView = glm::translate(glm::mat4(1.0f), _lightPosition);
-	_lightView = glm::lookAt(glm::vec3(-1.0f, 5.0f, -1.0f),
+	_lightView = glm::lookAt(glm::vec3(_lightPosition),
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -115,8 +116,6 @@ void Scene::Update( float deltaTs )
 	m_plane->Update(deltaTs);
 
 	_viewMatrix = glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -15.0f)), _cameraAngleX, glm::vec3(1, 0, 0)), _cameraAngleY, glm::vec3(0, 1, 0));
-	//_lightPosition += glm::vec3(0.0f, -0.01f, 0.0f);
-	//std::cout << _lightPosition.y;
 }
 
 void Scene::Draw()
@@ -136,6 +135,7 @@ void Scene::Draw()
 	glViewport(0, 0, 1080, 1080);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	_lightSpaceMatrix = _lightProjection * _lightView;
 	// Draw scene from Camera's POV
 	m_maxwell->Draw(_viewMatrix, _projMatrix, _lightSpaceMatrix);
 	m_plane->Draw(_viewMatrix, _projMatrix, _lightSpaceMatrix);

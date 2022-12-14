@@ -256,6 +256,7 @@ unsigned int Material::LoadTexture( std::string filename )
 
 
 
+// Use this function for drawing the scene from light's POV
 void Material::SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix)
 {
 	glUseProgram( _shaderProgram );
@@ -268,6 +269,7 @@ void Material::SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm:
 	glUniformMatrix4fv(_shaderLightSpaceMatrixMatLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 }
 
+// Use this function for drawing the scene from camera's POV
 void Material::SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix, glm::mat4 lightMatrix)
 {
 	glUseProgram(_shaderProgram);
@@ -277,7 +279,7 @@ void Material::SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm:
 	glUniformMatrix4fv(_shaderInvModelMatLocation, 1, GL_TRUE, glm::value_ptr(invModelMatrix));
 	glUniformMatrix4fv(_shaderViewMatLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	glUniformMatrix4fv(_shaderProjMatLocation, 1, GL_FALSE, glm::value_ptr(projMatrix));
-	glUniformMatrix4fv(_shaderLightSpaceMatrixMatLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+	glUniformMatrix4fv(_shaderLightSpaceMatrixMatLocation, 1, GL_FALSE, glm::value_ptr(lightMatrix));
 }
 	
 
