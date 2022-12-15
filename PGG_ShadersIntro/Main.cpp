@@ -187,6 +187,9 @@ int main(int argc, char *argv[])
 	myScene.m_maxwell->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	myScene.m_maxwell->SetPosition(glm::vec3(0.0f, 0.0f, 0.25f));
 
+	myScene.m_flopp->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
+	myScene.m_flopp->SetPosition(glm::vec3(0.0f, -1.9f, 0.25f));
+
 	myScene.m_plane->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	myScene.m_plane->SetPosition(glm::vec3(0.0f, -2.0f, 0.0f));
 

@@ -32,7 +32,8 @@ public:
 	// Draws the scene from the camera's point of view
 	void Draw();
 
-	GameObject* m_maxwell, * m_plane;
+	GameObject *m_maxwell, *m_plane, *m_flopp;
+	Material* maxwellMaterial, * planeMaterial, * floppMaterial;
 
 	float angle;
 

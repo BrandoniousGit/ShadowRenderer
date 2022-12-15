@@ -46,39 +46,48 @@ Scene::Scene()
 	// Creating a game object
 	m_maxwell = new GameObject();
 	m_plane = new GameObject();
+	m_flopp = new GameObject();
 
 	// Creating the material for the game object
-	Material* maxwellMaterial = new Material();
-	Material* planeMaterial = new Material();
+	maxwellMaterial = new Material();
+	planeMaterial = new Material();
+	floppMaterial = new Material();
 
 	//Creating Light material for game object
 	Material* maxwellLightMaterial = new Material();
 	Material* planeLightMaterial = new Material();
+	Material* floppLightMaterial = new Material();
 
 	// Setting Shaders
 	maxwellMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	planeMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	floppMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
 	//Loading Light Shaders
 	maxwellLightMaterial->LoadShaders("lightVertShader.txt", "lightFragShader.txt");
 	planeLightMaterial->LoadShaders("lightVertShader.txt", "lightFragShader.txt");
+	floppLightMaterial->LoadShaders("lightVertShader.txt", "lightFragShader.txt");
 
 	// You can set some simple material properties, these values are passed to the shader
 	// This colour modulates the texture colour
 	maxwellMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	planeMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f) );
+	floppMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	// Setting default Textures
 	maxwellMaterial->SetTexture("Maxwell_Diffuse.bmp");
 	planeMaterial->SetTexture("WelcomeMat_diffuse.bmp");
+	floppMaterial->SetTexture("Maxwell_Diffuse.bmp");
 
 	// Setting the Shadow Maps
 	maxwellMaterial->SetShadowMap(depthMap);
 	planeMaterial->SetShadowMap(depthMap);
+	floppMaterial->SetShadowMap(depthMap);
 
 	// Need to tell the material the light's position
 	// If you change the light's position you need to call this again
 	maxwellMaterial->SetLightPosition(_lightPosition);
 	planeMaterial->SetLightPosition(_lightPosition);
+	floppMaterial->SetLightPosition(_lightPosition);
 
 	//Setting up the light space matrix
 	_lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 10.0f);
@@ -90,18 +99,26 @@ Scene::Scene()
 	//Normal Materials
 	m_maxwell->SetMaterial(maxwellMaterial);
 	m_plane->SetMaterial(planeMaterial);
+	m_flopp->SetMaterial(floppMaterial);
+
 	//Light Materials
 	m_maxwell->SetLightMaterial(maxwellLightMaterial);
 	m_plane->SetLightMaterial(planeLightMaterial);
+	m_flopp->SetLightMaterial(floppLightMaterial);
 
 	// The mesh is the geometry for the object
 	Mesh *maxwellMesh = new Mesh();
 	Mesh* planeMesh = new Mesh();
+	Mesh* floppMesh = new Mesh();
 	// Load from OBJ file. This must have triangulated geometry
 	maxwellMesh->LoadOBJ("Maxwell.obj");
 	m_maxwell->SetMesh(maxwellMesh);
+
 	planeMesh->LoadOBJ("WelcomeMatOBJ.obj");
 	m_plane->SetMesh(planeMesh);
+
+	floppMesh->LoadOBJ("Maxwell.obj");
+	m_flopp->SetMesh(floppMesh);
 }
 
 Scene::~Scene()
@@ -114,6 +131,7 @@ void Scene::Update( float deltaTs )
 	//Update functions for game objects
 	m_maxwell->Update(deltaTs);
 	m_plane->Update(deltaTs);
+	m_flopp->Update(deltaTs);
 
 	_viewMatrix = glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -15.0f)), _cameraAngleX, glm::vec3(1, 0, 0)), _cameraAngleY, glm::vec3(0, 1, 0));
 }
@@ -128,6 +146,7 @@ void Scene::Draw()
 	// Draw scene from light's POV
     m_maxwell->LightDraw(_lightView, _lightProjection);
 	m_plane->LightDraw(_lightView, _lightProjection);
+	m_flopp->LightDraw(_lightView, _lightProjection);
 
 	// Set the screen as the write buffer
 	// Set the depth map texture for use in the objects
@@ -139,4 +158,5 @@ void Scene::Draw()
 	// Draw scene from Camera's POV
 	m_maxwell->Draw(_viewMatrix, _projMatrix, _lightSpaceMatrix);
 	m_plane->Draw(_viewMatrix, _projMatrix, _lightSpaceMatrix);
+	m_flopp->Draw(_viewMatrix, _projMatrix, _lightSpaceMatrix);
 }
