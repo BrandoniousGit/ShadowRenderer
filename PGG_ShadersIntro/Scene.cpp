@@ -59,13 +59,14 @@ Scene::Scene()
 	Material* floppLightMaterial = new Material();
 
 	// Setting Shaders
-	maxwellMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	planeMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
-	floppMaterial->LoadShaders("VertShader.txt", "FragShader.txt");
+	maxwellMaterial->LoadShaders("Resources/VertShader.txt", "Resources/FragShader.txt");
+	planeMaterial->LoadShaders("Resources/VertShader.txt", "Resources/FragShader.txt");
+	floppMaterial->LoadShaders("Resources/VertShader.txt", "Resources/FragShader.txt");
+
 	//Loading Light Shaders
-	maxwellLightMaterial->LoadShaders("lightVertShader.txt", "lightFragShader.txt");
-	planeLightMaterial->LoadShaders("lightVertShader.txt", "lightFragShader.txt");
-	floppLightMaterial->LoadShaders("lightVertShader.txt", "lightFragShader.txt");
+	maxwellLightMaterial->LoadShaders("Resources/lightVertShader.txt", "Resources/lightFragShader.txt");
+	planeLightMaterial->LoadShaders("Resources/lightVertShader.txt", "Resources/lightFragShader.txt");
+	floppLightMaterial->LoadShaders("Resources/lightVertShader.txt", "Resources/lightFragShader.txt");
 
 	// You can set some simple material properties, these values are passed to the shader
 	// This colour modulates the texture colour
@@ -74,9 +75,9 @@ Scene::Scene()
 	floppMaterial->SetDiffuseColour(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	// Setting default Textures
-	maxwellMaterial->SetTexture("Maxwell_Diffuse.bmp");
-	planeMaterial->SetTexture("WelcomeMat_diffuse.bmp");
-	floppMaterial->SetTexture("Maxwell_Diffuse.bmp");
+	maxwellMaterial->SetTexture("Resources/Maxwell_Diffuse.bmp");
+	planeMaterial->SetTexture("Resources/WelcomeMat_diffuse.bmp");
+	floppMaterial->SetTexture("Resources/Maxwell_Diffuse_Inverted.bmp");
 
 	// Setting the Shadow Maps
 	maxwellMaterial->SetShadowMap(depthMap);
@@ -111,13 +112,13 @@ Scene::Scene()
 	Mesh* planeMesh = new Mesh();
 	Mesh* floppMesh = new Mesh();
 	// Load from OBJ file. This must have triangulated geometry
-	maxwellMesh->LoadOBJ("Maxwell.obj");
+	maxwellMesh->LoadOBJ("Resources/Maxwell.obj");
 	m_maxwell->SetMesh(maxwellMesh);
 
-	planeMesh->LoadOBJ("WelcomeMatOBJ.obj");
+	planeMesh->LoadOBJ("Resources/WelcomeMatOBJ.obj");
 	m_plane->SetMesh(planeMesh);
 
-	floppMesh->LoadOBJ("Maxwell.obj");
+	floppMesh->LoadOBJ("Resources/Maxwell.obj");
 	m_flopp->SetMesh(floppMesh);
 }
 

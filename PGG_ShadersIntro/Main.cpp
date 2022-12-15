@@ -167,6 +167,7 @@ int main(int argc, char *argv[])
 	// They will be used to control the camera
 	bool cmdRotateLeft = false, cmdRotateRight = false, cmdRotateUp = false, cmdRotateDown = false;
 	bool RotateCatX = false, RotateCatY = false, RotateCatZ = false, RotateCatNegativeX = false, RotateCatNegativeY = false, RotateCatNegativeZ = false;
+	bool MoveCatX = false, MoveCatNegativeX = false, MoveCatZ = false, MoveCatNegativeZ = false;
 
 	bool reset = false;
 
@@ -188,7 +189,7 @@ int main(int argc, char *argv[])
 	myScene.m_maxwell->SetPosition(glm::vec3(0.0f, 0.0f, 0.25f));
 
 	myScene.m_flopp->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
-	myScene.m_flopp->SetPosition(glm::vec3(0.0f, -1.9f, 0.25f));
+	myScene.m_flopp->SetPosition(glm::vec3(-1.0f, -1.9f, 0.0f));
 
 	myScene.m_plane->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	myScene.m_plane->SetPosition(glm::vec3(0.0f, -2.0f, 0.0f));
@@ -264,6 +265,18 @@ int main(int argc, char *argv[])
 				case SDLK_e:
 					RotateCatNegativeZ = true;
 					break;
+				case SDLK_j:
+					MoveCatNegativeX = true;
+					break;
+				case SDLK_k:
+					MoveCatZ = true;
+					break;
+				case SDLK_l:
+					MoveCatX = true;
+					break;
+				case SDLK_i:
+					MoveCatNegativeZ = true;
+					break;
 				}
 				break;
 
@@ -302,6 +315,18 @@ int main(int argc, char *argv[])
 					break;
 				case SDLK_e:
 					RotateCatNegativeZ = false;
+					break;
+				case SDLK_j:
+					MoveCatNegativeX = false;
+					break;
+				case SDLK_k:
+					MoveCatZ = false;
+					break;
+				case SDLK_l:
+					MoveCatX = false;
+					break;
+				case SDLK_i:
+					MoveCatNegativeZ = false;
 					break;
 				}
 				break;
@@ -372,6 +397,25 @@ int main(int argc, char *argv[])
 			myScene.m_maxwell->AddRotation(glm::vec3(0.0f, 0.0f, 0.01f));
 		}
 
+		//Move the Cat
+		if (MoveCatX && !MoveCatNegativeX)
+		{
+			myScene.m_maxwell->AddPosition(glm::vec3(0.03f, 0.0f, 0.0f));
+		}
+		else if (!MoveCatX && MoveCatNegativeX)
+		{
+			myScene.m_maxwell->AddPosition(glm::vec3(-0.03f, 0.0f, 0.0f));
+		}
+
+		if (MoveCatZ && !MoveCatNegativeZ)
+		{
+			myScene.m_maxwell->AddPosition(glm::vec3(0.0f, 0.0f, 0.03f));
+		}
+		else if (!MoveCatZ && MoveCatNegativeZ)
+		{
+			myScene.m_maxwell->AddPosition(glm::vec3(0.0f, 0.0f, -0.03f));
+		}
+
 		if (reset)
 		{
 			myScene.m_maxwell->SetRotation(0.0f, 0.0f, 0.0f);
@@ -414,6 +458,7 @@ int main(int argc, char *argv[])
 			ImGui::Text("W & S for X Rotation");
 			ImGui::Text("A & D for Y Rotation");
 			ImGui::Text("Q & E for Z Rotation");
+			ImGui::Text("J, K, L & I for Movement");
 
 			// Checkbox for the object's animation
 		    ImGui::Text("Press button to Reset Cat");

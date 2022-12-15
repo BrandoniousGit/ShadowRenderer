@@ -1,0 +1,78 @@
+#version 430 core
+// This is the fragment shader
+// The program in this file will be run separately for each fragment (pixel) that is drawn
+
+// These are the per-fragment inputs
+// They must match with the outputs of the vertex shader
+in vec3 eyeSpaceNormalV;
+in vec3 eyeSpaceLightPosV;
+in vec3 eyeSpaceVertPosV;
+in vec2 texCoord;
+in vec4 fragPosLightSpace;
+
+// These variables will be the same for every vertex in the model
+// They are mostly material and light properties
+// We provide default values in case the program doesn't set them
+uniform vec3 lightColour = {1,1,1};
+uniform vec3 emissiveColour = {0,0,0};
+uniform vec3 ambientColour  = {0.1f,0.1f,0.2f};
+uniform vec3 diffuseColour  = {0.8f,0.1f,0.1f};
+uniform vec3 specularColour = {0.0f,1.0f,0.0f};
+uniform float shininess     = 50.0f;
+uniform float alpha         = 1.0f;
+
+
+// This is another input to allow us to access a texture
+uniform sampler2D tex1;
+uniform sampler2D shadowMap;
+
+// This is the output, it is the fragment's (pixel's) colour
+out vec4 fragColour;
+
+float ShadowCalc(vec4 fragPosLightSpace, vec3 m_normal, vec3 m_lightDir)
+{
+	vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+	projCoords = projCoords * 0.5 + 0.5;
+	float closestDepth = texture(shadowMap, projCoords.xy).r;
+	float currentDepth = projCoords.z;
+
+	float bias = max(0.05 * (1.0 - dot(m_normal, m_lightDir)), 0.05);  
+
+	float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+
+	return shadow;
+	//return closestDepth;
+}
+
+// The actual program, which will run on the graphics card
+void main()
+{
+	// This is the direction from the fragment to the light, in eye-space
+	vec3 lightDir = normalize( eyeSpaceLightPosV - eyeSpaceVertPosV );
+	// Re-normalise the normal just in case
+	vec3 normal = normalize( eyeSpaceNormalV );
+	vec3 viewDir = normalize( -eyeSpaceVertPosV );
+	vec3 halfVec = normalize( viewDir + lightDir );
+	
+	// Retrieve colour from texture
+	vec3 texCol = vec3(texture(tex1,vec2(texCoord.x,1-texCoord.y)));
+
+		// Diffuse
+		float diff = max(dot(lightDir, normal), 0.0);
+		vec3 diffuse = diff * lightColour;
+		
+		// Specular
+		float spec = 0.0;
+		spec = pow(max(dot(normal, halfVec), 0.0), 64.0);
+		vec3 specular = spec * lightColour;
+
+		// Ambient
+		vec3 ambient = 0.15 * lightColour;
+
+		// Shadow
+		float shadow = ShadowCalc(fragPosLightSpace, normal, lightDir);
+		vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * texCol;
+
+		fragColour = vec4(lighting, 1.0);
+		//fragColour = vec4( texture(shadowMap,texCoord).x);
+}
